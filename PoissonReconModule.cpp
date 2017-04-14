@@ -67,19 +67,21 @@ void PoissonReconModule::run() {
 		throw ErrorException("result file must not be empty.");
 	}
 
+	// TODO put this into a temporary directory
 	ofstream plyFileS(plyFile);
-	pointCloud->serialize(plyFileS);
+	pointCloud->serialize(plyFileS, "");
 	plyFileS.close();
 
 	// run binary
-	int ret = system((string(POISSON_BINARY)
-        + string(" --in ") + plyFile
-        + string(" --out ") + resultFile
-	    + options
-    ).c_str());
+	string cmd = (string(POISSON_BINARY)
+	              + string(" --in ") + plyFile
+	              + string(" --out ") + resultFile
+	              + options);
+	UIPF_LOG_INFO("Running command: ", cmd);
+	int ret = system(cmd.c_str());
 
 	if (ret != 0) {
-		throw ErrorException("Bundler exited non-zero.");
+		throw ErrorException("PoissonRecon exited non-zero.");
 	}
 
 	// TODO create mesh data structure to load data in uipf instead of just putting it into a file

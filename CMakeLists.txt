@@ -23,8 +23,8 @@ message("CMAKE_CXX_FLAGS_RELEASE: ${CMAKE_CXX_FLAGS_RELEASE}")
 include(ExternalProject)
 # build bundler as external project
 ExternalProject_Add(PoissonRecon
-	SOURCE_DIR ${uipf-sfm-bundler_SOURCE_DIR}/PoissonRecon
-	CONFIGURE_COMMAND rsync -r ${uipf-sfm-bundler_SOURCE_DIR}/PoissonRecon .
+	SOURCE_DIR ${uipf-sfm-poissonrecon_SOURCE_DIR}/PoissonRecon
+	CONFIGURE_COMMAND rsync -r ${uipf-sfm-poissonrecon_SOURCE_DIR}/PoissonRecon .
 	# parallelize the build to be faster
 	BUILD_COMMAND cd PoissonRecon && make -j 4
 	TEST_COMMAND ""
@@ -74,17 +74,17 @@ install(TARGETS
 	ARCHIVE DESTINATION lib/uipf
 )
 
-install(FILES ${PoissonRecon_BINARY_DIR}/Bin/Linux/PoissonRecon
+install(FILES ${PoissonRecon_BINARY_DIR}/PoissonRecon/Bin/Linux/PoissonRecon
 	DESTINATION bin/
 	PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
 	RENAME uipf-poisson-recon
 )
-install(FILES ${PoissonRecon_BINARY_DIR}/Bin/Linux/SSDRecon
+install(FILES ${PoissonRecon_BINARY_DIR}/PoissonRecon/Bin/Linux/SSDRecon
 	DESTINATION bin/
 	PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
 	RENAME uipf-ssd-recon
 )
-install(FILES ${PoissonRecon_BINARY_DIR}/Bin/Linux/SurfaceTrimmer
+install(FILES ${PoissonRecon_BINARY_DIR}/PoissonRecon/Bin/Linux/SurfaceTrimmer
 	DESTINATION bin/
 	PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
 	RENAME uipf-surface-trimmer

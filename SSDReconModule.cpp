@@ -7,9 +7,9 @@
 
 #include <uipf-sfm/data/PointCloud.hpp>
 
-#define UIPF_MODULE_NAME "Poisson Surface Reconstruction"
-#define UIPF_MODULE_ID "uipfsfm.mesh.poisson"
-#define UIPF_MODULE_CLASS PoissonReconModule
+#define UIPF_MODULE_NAME "Smoothed Signed Distance Reconstruction"
+#define UIPF_MODULE_ID "uipfsfm.mesh.ssd"
+#define UIPF_MODULE_CLASS SSDReconModule
 #define UIPF_MODULE_CATEGORY "mesh"
 
 #define UIPF_MODULE_INPUTS \
@@ -22,7 +22,6 @@
 #define UIPF_MODULE_PARAMS \
 		{"result_file", uipf::ParamDescription("Name of the file to save the mesh in.")}, \
 		{"depth", uipf::ParamDescription("This integer is the maximum depth of the tree that will be used for surface reconstruction. Default 8.", true)}, \
-		{"pointWeight", uipf::ParamDescription("This floating point value specifies the importance that interpolation of the point samples is given in the formulation of the screened Poisson equation. Default 4.0.", true)}, \
 		{"color", uipf::ParamDescription("If specified, the reconstruction code assumes that the input is equipped with colors, a good value would be 16. Default empty.", true)}, \
 		{"density", uipf::ParamDescription("Enabling this flag tells the reconstructor to output the estimated depth values of the iso-surface vertices. Default false.", true)}
 
@@ -32,9 +31,9 @@
 
 
 // TODO configure this path with cmake
-#define POISSON_BINARY "uipf-poisson-recon"
+#define POISSON_BINARY "uipf-ssd-recon"
 
-void PoissonReconModule::run() {
+void SSDReconModule::run() {
 
 	using namespace std;
 	using namespace uipf;
@@ -47,10 +46,6 @@ void PoissonReconModule::run() {
 	string depth = getParam<string>("depth", "");
 	if (!depth.empty()) {
 		options += " --depth " + depth;
-	}
-	string pointWeight = getParam<string>("pointWeight", "");
-	if (!pointWeight.empty()) {
-		options += " --pointWeight " + pointWeight;
 	}
 	string color = getParam<string>("color", "");
 	if (!color.empty()) {
@@ -79,7 +74,7 @@ void PoissonReconModule::run() {
     ).c_str());
 
 	if (ret != 0) {
-		throw ErrorException("Bundler exited non-zero.");
+		throw ErrorException("SSDRecon exited non-zero.");
 	}
 
 	// TODO create mesh data structure to load data in uipf instead of just putting it into a file

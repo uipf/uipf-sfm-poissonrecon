@@ -37,7 +37,6 @@ void SurfaceTrimmerModule::run() {
 
 	using namespace std;
 	using namespace uipf;
-	using namespace uipfsfm::data;
 
 	// TODO implement
 }
